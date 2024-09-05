@@ -1,0 +1,35 @@
+
+
+一. 2023-11-15
+
+1.uboot 可以编译成功
+
+在当前目录中，
+./make.sh firefly-rk3399   使用firefly-rk3399_defconfig 的配置文件
+./make.sh    使用当前存在的.config 作为配置文件。
+
+
+！！！！！！不能在sdk目录中编译 ./build.sh uboot   这个会有问题！！！！！
+
+
+2. 这个可以读取ext4的分区中的dtb文件，之前的（firefly的和jc的）不能读取，导致无法正常初始化mipi屏。
+
+
+3. 把这个波特率改为了115200.
+
+
+
+二、2023-11-16
+1. 注意uboot中的代码进行了一些jc3399的适应，使用配置项CONFIG_TARGET_JC_RK3399来控制
+	在make menuconfig ARCH=arm中
+		ARM architecture  ---> 
+			RK3399 board select (RK3399 hnhtjc board)  ---> 
+				 ( ) RK3399 evaluation board         //默认firefly适应的用这个选项   
+                 (X) RK3399 hnhtjc board             //jc3399 核心板用这个，主要是722使用的核心板           
+                 ( ) RK3399 zhongda board            //众达的，没有修改适配，只是放在           
+                 ( ) Theobroma Systems RK3399-Q7 (Puma)    //原来就有的。
+
+
+2. 波特率改为了115200，请留意
+3. jc3399的配置文件为configs/jc3399-1115-ok1_defconfig ，应该跟firefly-rk3399_defconfig 是一致的，就是波特率改了。
+4. 编译的方法，直接./make.sh  (默认使用.config),否则参考11-15的第一节
